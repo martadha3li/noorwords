@@ -1,10 +1,47 @@
-// مقتطف برمجي لصفحة الأدعية
-function showSmartDua(timings) {
-    const now = new Date();
-    const currentTime = now.getHours() + ":" + now.getMinutes();
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأدعية والتعقيبات</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header><h1>الأدعية والتعقيبات</h1></header>
+        
+        <div id="dua-display-area">
+            <div class="filter-buttons">
+                <button onclick="filterDuas('taqeeb')">تعقيبات</button>
+                <button onclick="filterDuas('daily')">أدعية يومية</button>
+            </div>
+            <div id="duas-list"></div>
+        </div>
 
-    // منطق بسيط: إذا كان الوقت الحالي بعد المغرب مثلاً، اعرض تعقيب المغرب
-    if (currentTime > timings.Maghrib && currentTime < timings.Isha) {
-        document.getElementById('dua-content').innerText = "تعقيب صلاة المغرب: ...";
-    }
-}
+        <nav class="bottom-nav">
+            <a href="index.html">المواقيت</a>
+            <a href="duas.html" class="active">الأدعية</a>
+            <a href="admin.html">الإدارة</a>
+        </nav>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { /* ... نفس الإعدادات ... */ };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.filterDuas = async (category) => {
+            const q = query(collection(db, "duas"), where("category", "==", category));
+            const snap = await getDocs(q);
+            const list = document.getElementById('duas-list');
+            list.innerHTML = '';
+            snap.forEach(doc => {
+                list.innerHTML += `<div class="dua-item"><h3>${doc.data().prayer}</h3><p>${doc.data().text}</p></div>`;
+            });
+        };
+    </script>
+</body>
+</html>
