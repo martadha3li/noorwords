@@ -1,0 +1,10 @@
+// مقتطف برمجي لصفحة الأدعية
+function showSmartDua(timings) {
+    const now = new Date();
+    const currentTime = now.getHours() + ":" + now.getMinutes();
+
+    // منطق بسيط: إذا كان الوقت الحالي بعد المغرب مثلاً، اعرض تعقيب المغرب
+    if (currentTime > timings.Maghrib && currentTime < timings.Isha) {
+        document.getElementById('dua-content').innerText = "تعقيب صلاة المغرب: ...";
+    }
+}
