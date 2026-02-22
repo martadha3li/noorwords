@@ -3,31 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نور الكلمات</title>
+<title>تطبيق العائلة</title>
 
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
-
 <meta name="theme-color" content="#0f172a">
-
 </head>
+
 <body>
 
 <header>
     <h2 id="todayDate"></h2>
+    <p id="hijriDate"></p>
 </header>
 
 <div class="container">
 
-    <!-- كرت المناسبة -->
-    <div class="card" id="todayEventCard" style="display:none;">
-        <h3>📌 مناسبة اليوم</h3>
-        <p id="todayEvent"></p>
-    </div>
-
-    <div class="card" id="tomorrowEventCard" style="display:none;">
-        <h3>📅 مناسبة الغد</h3>
-        <p id="tomorrowEvent"></p>
+    <!-- اختيار المدينة -->
+    <div class="card" id="citySelectCard">
+        <h3>اختر مدينتك</h3>
+        <select id="citySelect">
+            <option value="ahsa">الأحساء</option>
+            <option value="dammam">الدمام</option>
+            <option value="riyadh">الرياض</option>
+        </select>
+        <button onclick="saveCity()">حفظ</button>
     </div>
 
     <!-- أوقات الصلاة -->
@@ -38,15 +38,14 @@
 
     <!-- التعقيب -->
     <div class="card" id="taqibCard" style="display:none;">
-        <h3>📖 تعقيب الصلاة</h3>
+        <h3>📖 التعقيب</h3>
         <p id="taqibText"></p>
     </div>
 
 </div>
 
-<!-- التبويبات -->
 <nav>
-    <button onclick="showTab('home')">الرئيسية</button>
+    <button onclick="location.href='index.html'">الرئيسية</button>
     <button onclick="location.href='admin.html'">الإدارة</button>
 </nav>
 
