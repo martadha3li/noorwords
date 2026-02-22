@@ -120,13 +120,18 @@ function displayPrayerTimes(){
 }
 
 displayPrayerTimes();
-// التعقيب
-function checkPrayerTime() {
+function checkPrayerTime(){
+
     let now = new Date();
     let current = now.getHours().toString().padStart(2,'0') + ":" +
                   now.getMinutes().toString().padStart(2,'0');
 
-    if(current === prayerTimes.maghrib){
+    if(current === ahsaPrayerTimes.dhuhr){
+        document.getElementById("taqibCard").style.display="block";
+        document.getElementById("taqibText").innerText="تعقيب الظهر والعصر";
+    }
+
+    if(current === ahsaPrayerTimes.maghrib){
         document.getElementById("taqibCard").style.display="block";
         document.getElementById("taqibText").innerText="تعقيب المغرب والعشاء";
     }
