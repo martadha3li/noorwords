@@ -43,23 +43,83 @@ function checkEvents() {
 }
 
 checkEvents();
-
-// أوقات صلاة تجريبية (لاحقاً نربط API)
-const prayerTimes = {
-    fajr: "05:00",
-    sunrise: "06:15",
-    dhuhr: "12:00",
-    maghrib: "17:45"
+// ===============================
+// أوقات الأحساء (تقويم الزهراء 1447 - مثال تجريبي)
+// لاحقاً نربطه بجدول شهري كامل
+// ===============================
+const ahsaPrayerTimes = {
+    imsak: "04:40",
+    fajr: "04:50",
+    sunrise: "06:05",
+    dhuhr: "11:45",
+    asr: "15:10",
+    maghrib: "17:30",
+    isha: "18:50"
 };
 
-document.getElementById("prayerTimes").innerHTML = `
-الإمساك: 04:50 <br>
-الفجر: ${prayerTimes.fajr} <br>
-الشروق: ${prayerTimes.sunrise} <br>
-الظهر: ${prayerTimes.dhuhr} <br>
-المغرب: ${prayerTimes.maghrib}
-`;
+// ===============================
+// حفظ الفوارق
+// ===============================
+function saveOffsets(){
+    const dammam = parseInt(document.getElementById("dammamOffset").value) || 0;
+    const riyadh = parseInt(document.getElementById("riyadhOffset").value) || 0;
 
+    localStorage.setItem("dammamOffset", dammam);
+    localStorage.setItem("riyadhOffset", riyadh);
+
+    alert("تم حفظ الفوارق");
+}
+
+// ===============================
+// جلب الفوارق
+// ===============================
+function getOffsets(){
+    return {
+        dammam: parseInt(localStorage.getItem("dammamOffset")) || 0,
+        riyadh: parseInt(localStorage.getItem("riyadhOffset")) || 0
+    };
+}
+
+// ===============================
+// إضافة دقائق على الوقت
+// ===============================
+function addMinutes(time, minutes){
+    let [h,m] = time.split(":").map(Number);
+    let date = new Date();
+    date.setHours(h);
+    date.setMinutes(m + minutes);
+    return date.getHours().toString().padStart(2,'0') + ":" +
+           date.getMinutes().toString().padStart(2,'0');
+}
+
+// ===============================
+// عرض الصلوات
+// ===============================
+function displayPrayerTimes(){
+
+    const offsets = getOffsets();
+
+    let html = `
+    <h4>📍 الأحساء</h4>
+    الفجر: ${ahsaPrayerTimes.fajr}<br>
+    الظهر: ${ahsaPrayerTimes.dhuhr}<br>
+    المغرب: ${ahsaPrayerTimes.maghrib}<br><br>
+
+    <h4>📍 الدمام</h4>
+    الفجر: ${addMinutes(ahsaPrayerTimes.fajr, offsets.dammam)}<br>
+    الظهر: ${addMinutes(ahsaPrayerTimes.dhuhr, offsets.dammam)}<br>
+    المغرب: ${addMinutes(ahsaPrayerTimes.maghrib, offsets.dammam)}<br><br>
+
+    <h4>📍 الرياض</h4>
+    الفجر: ${addMinutes(ahsaPrayerTimes.fajr, offsets.riyadh)}<br>
+    الظهر: ${addMinutes(ahsaPrayerTimes.dhuhr, offsets.riyadh)}<br>
+    المغرب: ${addMinutes(ahsaPrayerTimes.maghrib, offsets.riyadh)}<br>
+    `;
+
+    document.getElementById("prayerTimes").innerHTML = html;
+}
+
+displayPrayerTimes();
 // التعقيب
 function checkPrayerTime() {
     let now = new Date();
