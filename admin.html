@@ -1,69 +1,32 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>لوحة التحكم</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الإدارة</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container admin-page">
-        <h2>لوحة إدارة التطبيق</h2>
 
-        <div class="admin-card">
-            <h3>التعديل الجماعي (+- دقائق)</h3>
-            الفجر: <input type="number" id="off_f">
-            المغرب: <input type="number" id="off_m">
-            <button id="saveOffsets">تحديث الكل</button>
-        </div>
+<header>
+    <h2>صفحة الإدارة</h2>
+</header>
 
-        <div class="admin-card">
-            <h3>رفع جدول الشهر (Excel)</h3>
-            <input type="file" id="excelFile">
-            <button id="uploadBtn">رفع الملف</button>
-        </div>
+<div class="container">
 
-        <div class="admin-card">
-            <h3>إضافة دعاء</h3>
-            <select id="cat"><option value="taqeeb">تعقيب</option><option value="daily">يومي</option></select>
-            <input type="text" id="prayerName" placeholder="اسم الصلاة">
-            <textarea id="duaTxt" placeholder="نص الدعاء"></textarea>
-            <button id="saveDua">حفظ</button>
-        </div>
+    <div class="card">
+        <h3>إضافة مناسبة</h3>
+        <input type="date" id="eventDate">
+        <input type="text" id="eventText" placeholder="اكتب المناسبة">
+        <button onclick="addEvent()">حفظ</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+</div>
 
-        const firebaseConfig = { /* ... نفس الإعدادات ... */ };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+<nav>
+    <button onclick="location.href='index.html'">الرئيسية</button>
+</nav>
 
-        // منطق رفع الإكسل
-        document.getElementById('uploadBtn').onclick = async () => {
-            const file = document.getElementById('excelFile').files[0];
-            const data = await file.arrayBuffer();
-            const workbook = XLSX.read(data);
-            const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-            
-            for (const row of rows) {
-                await setDoc(doc(db, "prayer_schedule", String(row.التاريخ)), {
-                    fajr: row.الفجر, dhuhr: row.الظهر, maghrib: row.المغرب, timestamp: new Date(row.التاريخ)
-                });
-            }
-            alert("تم الرفع");
-        };
-
-        // منطق حفظ الدعاء
-        document.getElementById('saveDua').onclick = async () => {
-            await addDoc(collection(db, "duas"), {
-                category: document.getElementById('cat').value,
-                prayer: document.getElementById('prayerName').value,
-                text: document.getElementById('duaTxt').value
-            });
-            alert("تم حفظ الدعاء");
-        };
-    </script>
+<script src="app.js"></script>
 </body>
 </html>
