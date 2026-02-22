@@ -3,38 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الإدارة</title>
+<title>لوحة التحكم</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h2>صفحة الإدارة</h2>
+    <h2>لوحة التحكم</h2>
 </header>
 
 <div class="container">
 
     <div class="card">
-        <h3>إضافة مناسبة</h3>
-        <input type="date" id="eventDate">
-        <input type="text" id="eventText" placeholder="اكتب المناسبة">
-        <button onclick="addEvent()">حفظ</button>
+        <h3>فارق المدن عن الأحساء (بالدقائق)</h3>
+
+        <label>الدمام:</label>
+        <input type="number" id="dammamOffset">
+
+        <label>الرياض:</label>
+        <input type="number" id="riyadhOffset">
+
+        <button onclick="saveOffsets()">حفظ الفوارق</button>
     </div>
 
 </div>
-<div class="card">
-    <h3>فارق المدن عن الأحساء (بالدقائق)</h3>
 
-    <label>الدمام:</label>
-    <input type="number" id="dammamOffset" placeholder="مثال: 3">
-
-    <label>الرياض:</label>
-    <input type="number" id="riyadhOffset" placeholder="مثال: -6">
-
-    <button onclick="saveOffsets()">حفظ الفوارق</button>
-</div>
 <nav>
-    <button onclick="location.href='index.html'">الرئيسية</button>
+    <button onclick="location.href='index.html'">العودة للرئيسية</button>
 </nav>
 
 <script src="app.js"></script>
